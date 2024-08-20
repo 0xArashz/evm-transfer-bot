@@ -21,6 +21,8 @@ const getRandomDelay = () => {
     return Math.floor(Math.random() * 6 + 10) * 1000;
 };
 
+const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
+
 let txCount = 0;
 const sendTransaction = async () => {
     try {
@@ -42,14 +44,14 @@ const sendTransaction = async () => {
             );
             if (txCount !== recipients.length) {
                 const interval = getRandomDelay();
-                setTimeout(sendTransaction, interval);
+                await sleep(interval);
             } else {
                 console.log("\n");
                 process.exit();
             }
         }
     } catch (error) {
-        console.error("\x1b[31m%s\x1b[0m", "SOMETHING WENT WRONG!");
+        console.error("\x1b[31m%s\x1b[0m", `ERROR: ${error.message}`);
     }
 };
 
